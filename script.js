@@ -4,17 +4,26 @@ const stopButton = document.querySelector('.btn2');
 const alertStatistics = document.querySelector('.alert');
 let intervalId = null;
 let resultArray = [];
-let objectStatistic={};
+let objectStatistic = {};
+
 function getRandomNumber() {
     return Math.floor(Math.random() * 36) + 1;
 }
 
 function startSpinning() {
     intervalId = setInterval(() => {
+        const numbers = [];
         for (let i = 0; i < number.length; i++) {
-            number[i].innerHTML = getRandomNumber()
+            let randNumber;
+            do {
+                randNumber = getRandomNumber();
+            } while (numbers.includes(randNumber));
 
+            numbers.push(randNumber)
+            number[i].innerHTML = randNumber;
         }
+
+
     }, 100);
 
 }
@@ -36,7 +45,7 @@ function showStatistics() {
     const max = Math.max(...resultArray);
     const min = Math.min(...resultArray);
     const avg = average()
-    objectStatistic={
+    objectStatistic = {
         "Min value": min,
         "Max value": max,
         "Average value": avg,
@@ -45,9 +54,20 @@ function showStatistics() {
         }
 
     };
-    alertStatistics.innerHTML = 'Maximum value ' + max + '<br>' + 'Minimum value '
-        + min + '<br>' + 'Average value ' + avg + '<br>' + 'Your object ' + objectStatistic.toString();
-    console.log(objectStatistic);
+    alertStatistics.innerHTML = 'Sorted array ' + resultArray.sort(function (a, b) {
+            return b - a;
+        })
+        + '<br>' + 'Maximum value ' + max
+        + '<br>' + 'Minimum value ' + min
+        + '<br>' + 'Average value ' + avg
+        + '<br>' + 'Your object ' + objectStatistic.toString()
+        + '<br>' + 'The number of even numbers ' + resultArray.filter(function (item) {
+            return item % 2 === 0;
+        }).length
+        + '<br>' + 'The number of odd numbers ' + resultArray.filter(function (item) {
+            return item % 2 !== 0;
+        }).length
+
 }
 
 function average() {
